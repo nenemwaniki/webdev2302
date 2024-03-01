@@ -1,33 +1,28 @@
 {% extends 'layout.html' %}
 
-
-
 {% block content %}
-    <h1>Timetable</h1>
-    <table>
-        <tr>
-            <th>Time</th>
-            <th>Monday</th>
-            <th>Tuesday</th>
-            <th>Wednesday</th>
-            <th>Thursday</th>
-            <th>Friday</th>
-        </tr>
-        {% for time in times %}{% extends 'layout.html' %}
-
-        {% block content %}
-            <!-- Specific content for the index page goes here -->
-            <h1>Welcome to My Website</h1>
-            <p>Today is {{ day }} and the time is {{ time }}.</p>
-            <!-- Add more content as needed -->
-        {% endblock %}
-        
-            <tr>
-                <td>{{ time }}</td>
-                {% for day in days %}
-                    <td>{{ day }}</td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-    </table>
+    <!-- Specific content for the index page goes here -->
+    <div class="container">
+        <h1>Welcome to the Student Schedule Interface</h1>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Time</th>
+                        <th>Subject</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Your dynamic schedule data goes here -->
+                    <tr>
+                        <td>Monday</td>
+                        <td>9:00 AM - 10:30 AM</td>
+                        <td>Biology</td>
+                    </tr>
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
