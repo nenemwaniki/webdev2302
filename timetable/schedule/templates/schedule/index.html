@@ -1,9 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>Hello</title>
-    </head>
-    <body>
-        <h1>Hello, World!</h1>
-    </body>
-</html>
+{% extends layout.html%}
+
+
+{% block content %}
+    <h1>Timetable</h1>
+    <table>
+        <tr>
+            <th>Time</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+        </tr>
+        {% for time in times %}
+            <tr>
+                <td>{{ time }}</td>
+                {% for day in days %}
+                    <td>{{ schedule[day][time] }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+```
