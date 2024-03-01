@@ -13,7 +13,15 @@
             <th>Thursday</th>
             <th>Friday</th>
         </tr>
-        {% for time in times %}
+        {% for time in times %}{% extends 'layout.html' %}
+
+        {% block content %}
+            <!-- Specific content for the index page goes here -->
+            <h1>Welcome to My Website</h1>
+            <p>Today is {{ day }} and the time is {{ time }}.</p>
+            <!-- Add more content as needed -->
+        {% endblock %}
+        
             <tr>
                 <td>{{ time }}</td>
                 {% for day in days %}
