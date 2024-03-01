@@ -1,28 +1,35 @@
-{% extends 'layout.html' %}
+{% extends 'schedule/layout.html' %}
 
 {% block content %}
-    <!-- Specific content for the index page goes here -->
     <div class="container">
         <h1>Welcome to the Student Schedule Interface</h1>
-        <div class="table-responsive">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>Day</th>
-                        <th>Time</th>
-                        <th>Subject</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Your dynamic schedule data goes here -->
-                    <tr>
-                        <td>Monday</td>
-                        <td>9:00 AM - 10:30 AM</td>
-                        <td>Biology</td>
-                    </tr>
-                    <!-- Add more rows as needed -->
-                </tbody>
-            </table>
-        </div>
+        
+        {% for student_id, timetable in student_timetables.items %}
+            <h2>Timetable for Student {{ student_id }}</h2>
+            {% if timetable %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Day</th>
+                                <th>Time</th>
+                                <th>Subject</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for _, row in timetable.iterrows %}
+                                <tr>
+                                    <td>{{ row.Day }}</td>
+                                    <td>{{ row.Time }}</td>
+                                    <td>{{ row.Subject }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>No schedule found for Student {{ student_id }}.</p>
+            {% endif %}
+        {% endfor %}
     </div>
 {% endblock %}
