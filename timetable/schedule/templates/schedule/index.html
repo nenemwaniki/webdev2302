@@ -3,33 +3,93 @@
 {% block content %}
     <div class="container">
         <h1>Welcome to the Student Schedule Interface</h1>
-        
-        {% for student_id, timetable in student_timetables.items %}
-            <h2>Timetable for Student {{ student_id }}</h2>
-            {% if timetable %}
-                <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Day</th>
-                                <th>Time</th>
-                                <th>Subject</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for _, row in timetable.iterrows %}
-                                <tr>
-                                    <td>{{ row.Day }}</td>
-                                    <td>{{ row.Time }}</td>
-                                    <td>{{ row.Subject }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            {% else %}
-                <p>No schedule found for Student {{ student_id }}.</p>
-            {% endif %}
-        {% endfor %}
+        <p>Here you can view and edit the schedule of students.</p>
+        <a href="{% url 'new' %}">Add a new student</a>
+        <br><br>
+        <div class="table-container">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                        <th>Email</th>
+                        <th>Registration Number</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.phone_number }}</td>
+                            <td>{{ student.email }}</td>
+                            <td>{{ student.registration_number }}</td>
+                            <td>
+                                <a href="{% url 'edit' student.id %}">Edit</a> |
+                                <a href="{% url 'delete' student.id %}" onclick="confirmDelete('{{ student.id }}')">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // 1. Smooth Scroll on anchor links
+        $('a[href^="#"]').on('click', function (event) {
+            event.preventDefault();
+
+            $('html, body').animate({
+                scrollTop: $($.attr(this, 'href')).offset().top
+            }, 500);
+        });
+
+        // 2. Border Animation on Hover (Only for Actions column)
+        $('table').on('mouseover', 'td.actions-column', function () {
+            $(this).css('border-color', 'babyblue'); // Change to baby blue color
+            $(this).css('border-width', '2px'); // Increase border width
+        }).on('mouseout', 'td.actions-column', function () {
+            $(this).css('border-color', '');
+            $(this).css('border-width', ''); // Reset border width
+        });
+
+        // 3. Table Row Highlight on Hover
+        $('table').on('mouseover', 'tr', function () {
+            $(this).css('background-color', 'lightgray');
+        }).on('mouseout', 'tr', function () {
+            $(this).css('background-color', '');
+        });
+
+        // 4. Table Row Highlight on Click
+        $('table').on('click', 'tr', function () {
+            $(this).css('background-color', 'lightgray');
+        });
+        
+        function confirmDelete(studentId) {
+  if (confirm("Are you sure you want to delete this student?")) {
+    // Instead of creating a temporary form, submit a POST request directly
+    fetch(`/delete/${studentId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', // Optional, but good practice for POST requests
+      },
+    })
+      .then(response => response.json()) // Parse the JSON response (if any)
+      .then(data => {
+        // Handle the success or error response from the server (optional)
+        console.log("Student deleted:", data);
+      })
+      .catch(error => {
+        console.error("Error deleting student:", error);
+        // Handle potential errors during the request
+      });
+  }
+}});
+</script>
+
+
 {% endblock %}

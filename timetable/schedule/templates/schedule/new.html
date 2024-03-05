@@ -1,0 +1,10 @@
+{% extends "schedule\layout.html" %}
+
+{% block content %}
+    <h1>New Student</h1>
+    <table class="table table-striped">
+        {{ form.as_table }}
+        {% csrf_token %}
+    </table>
+    <button method="post" type="submit">Save</button>
+{% endblock %}
