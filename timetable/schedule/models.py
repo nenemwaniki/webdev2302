@@ -1,41 +1,60 @@
 from django.db import models
 
-# Create your models here.
-class Student(models.Model):
-    name = models.CharField(max_length=100)
-    registration_number = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-    phone_number = models.CharField(max_length=100)
-    year_of_study = models.CharField(max_length=100)
-    
-
-    def __str__(self):
-        return self.name
-    
-class Unit(models.Model):
+class units(models.Model):
+    unit_code = models.CharField(max_length=10)
     unit_name = models.CharField(max_length=100)
-    unit_code = models.CharField(max_length=100)
-    unit_description = models.CharField(max_length=100, blank=True)
-    unit_lecturer = models.CharField(max_length=100, blank=True)
+    unit_description = models.TextField()
+    unit_lecturer = models.CharField(max_length=100)
+    unit_semester = models.IntegerField()
+    unit_venue = models.CharField(max_length=100)
+    unit_time = models.TimeField()
+    
 
     def __str__(self):
         return self.unit_name
-class timetable(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
-    time = models.CharField(max_length=100)
-    day = models.CharField(max_length=100)
-    venue = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.student.name + ' - ' + self.unit.unit_name
     
-class course(models.Model):
+class courses(models.Model):
+    course_code = models.CharField(max_length=10)
     course_name = models.CharField(max_length=100)
-    course_code = models.CharField(max_length=100)
-    course_description = models.CharField(max_length=100, blank=True)
-    course_lecturer = models.CharField(max_length=100, blank=True)
-    unit=models.ManyToManyField(Unit)
-
+    course_description = models.TextField()
+    course_units = models.ManyToManyField(units)
+    
     def __str__(self):
         return self.course_name
+    
+class students(models.Model):
+    student_reg = models.CharField(max_length=10)
+    student_name = models.CharField(max_length=100)
+    student_course = models.ForeignKey(courses, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.student_name
+
+class timetable(models.Model):
+    unit = models.ForeignKey(units, on_delete=models.CASCADE)
+    day = models.CharField(max_length=10)
+    time = models.TimeField()
+    venue = models.CharField(max_length=100)
+    student = models.ForeignKey(students, on_delete=models.CASCADE)
+    course= models.ForeignKey(courses, on_delete=models.CASCADE)
+
+    
+    def __str__(self):
+        return self.unit.unit_name
+    
+class admin(models.Model):
+    admin_name = models.CharField(max_length=100)
+    admin_password = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.admin_name
+
+class special_events(models.Model):
+    event_name = models.CharField(max_length=100)
+    event_description = models.TextField()
+    event_date = models.DateField()
+    event_time = models.TimeField()
+    event_venue = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.event_name
