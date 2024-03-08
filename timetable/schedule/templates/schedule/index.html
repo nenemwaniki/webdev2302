@@ -18,19 +18,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for student in students %}
+                    {% if students %}
+                        {% for student in students %}
+                            <tr>
+                                <td>{{ student.name }}</td>
+                                <td>{{ student.phone_number }}</td>
+                                <td>{{ student.email }}</td>
+                                <td>{{ student.registration_number }}</td>
+                                <td>
+                                    <a>Edit</a> 
+                                    <a>View Schedule</a>
+                                    <a>Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
                         <tr>
-                            <td>{{ student.name }}</td>
-                            <td>{{ student.phone_number }}</td>
-                            <td>{{ student.email }}</td>
-                            <td>{{ student.registration_number }}</td>
-                            <td>
-                                <a >Edit</a> 
-                                <a >View Schedule</a>
-                                <a >Delete</a>
-                            </td>
+                            <td colspan="5">No students</td>
                         </tr>
-                    {% endfor %}
+                    {% endif %}
                 </tbody>
             </table>
         </div>

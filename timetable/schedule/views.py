@@ -7,7 +7,7 @@ from django.urls import reverse
 
 # Create your views here.
 def index(request):
-    students_list = students.objects.all()  # Use the correct model name here
+    students_list = Students.objects.all()  # Use the correct model name here
     return render(request, 'schedule/index.html', {'students': students_list})
 
 
