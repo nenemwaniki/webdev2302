@@ -1,33 +1,36 @@
 from django.db import models
 
 class Units(models.Model):  # Use PascalCase for model names
-    unit_code = models.CharField(max_length=10, unique=True)  # Ensure unique unit codes
-    unit_name = models.CharField(max_length=100)
-    unit_description = models.TextField()
-    unit_lecturer = models.CharField(max_length=100)
-    unit_semester = models.IntegerField()
-    unit_venue = models.CharField(max_length=100)
-    unit_time = models.TimeField()
+    code = models.CharField(max_length=10, unique=True)  # Ensure unique unit codes
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    lecturer = models.CharField(max_length=100)
+    semester = models.FloatField()
+    venue = models.CharField(max_length=100)
+    time = models.TimeField()
 
     def __str__(self):
-        return self.unit_name
+        return self.name
 
 class Courses(models.Model):  # Use PascalCase for model names
-    course_code = models.CharField(max_length=10, unique=True)  # Ensure unique course codes
-    course_name = models.CharField(max_length=100)
-    course_description = models.TextField()
-    course_units = models.ManyToManyField(Units, related_name='courses')  # Specify related_name
+    code = models.CharField(max_length=10, unique=True)  # Ensure unique course codes
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    units = models.ManyToManyField(Units, related_name='courses', blank=True)  # Specify related_name
 
     def __str__(self):
-        return self.course_name
+        return self.name
 
 class Students(models.Model):
-    student_reg = models.CharField(max_length=10, unique=True)  # Ensure unique student registration IDs
-    student_name = models.CharField(max_length=100)
-    student_course = models.ForeignKey(Courses, on_delete=models.CASCADE, null=True, blank=True)
+    reg = models.CharField(max_length=10, unique=True)  # Ensure unique student registration IDs
+    name = models.CharField(max_length=100)
+    Program = models.ForeignKey(Courses, on_delete=models.CASCADE, null=True, blank=True)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+
 
     def __str__(self):
-        return self.student_name
+        return self.name
 
 class Timetable(models.Model):
     unit = models.ForeignKey(Units, on_delete=models.CASCADE)
@@ -35,7 +38,7 @@ class Timetable(models.Model):
     course = models.ForeignKey(Courses, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.unit.unit_name} - {self.student.student_name}"
+        return f"{self.unit.name} - {self.student.name}"
 
 class Administrator(models.Model):
     admin_name = models.CharField(max_length=100)
@@ -45,11 +48,11 @@ class Administrator(models.Model):
         return self.admin_name
 
 class SpecialEvents(models.Model):
-    event_name = models.CharField(max_length=100)
-    event_description = models.TextField()
-    event_date = models.DateField()
-    event_time = models.TimeField()
-    event_venue = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    date = models.DateField()
+    time = models.TimeField()
+    venue = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.event_name
+        return self.name

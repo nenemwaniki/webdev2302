@@ -4,7 +4,7 @@
     <div class="container">
         <h1>Welcome to the Student Schedule Interface</h1>
         <p>Here you can view and edit the schedule of students.</p>
-        <a >Add a new student</a>
+        <a href="{% url 'newstudent' %}" class="btn btn-primary">Add a new student</a>
         <br><br>
         <div class="table-container">
             <table class="table table-bordered">
@@ -22,13 +22,29 @@
                         {% for student in students %}
                             <tr>
                                 <td>{{ student.name }}</td>
-                                <td>{{ student.phone_number }}</td>
+                                <td>{{ student.phone }}</td>
                                 <td>{{ student.email }}</td>
-                                <td>{{ student.registration_number }}</td>
+                                <td>{{ student.reg }}</td>
                                 <td>
-                                    <a>Edit</a> 
+                                    <a href="{% url 'editstudent' student.id %}" class="btn btn-primary">Edit</a> 
                                     <a>View Schedule</a>
-                                    <a>Delete</a>
+                                    <td>
+                                        <a href="{% url 'deletestudent' pk=student.pk %}" class="btn btn-danger delete-student">Delete</a>
+                                    </td>
+                                    
+                                    <script>
+                                    document.querySelectorAll('.delete-student').forEach(deleteButton => {
+                                      deleteButton.addEventListener('click', (event) => {
+                                        event.preventDefault(); // Prevent default form submission
+                                    
+                                        const confirmation = confirm("Are you sure you want to delete this student?");
+                                        if (confirmation) {
+                                          window.location.href = event.target.href; // Redirect on confirmation
+                                        }
+                                      });
+                                    });
+                                    </script>
+                                    
                                 </td>
                             </tr>
                         {% endfor %}
