@@ -7,9 +7,8 @@ from django.urls import reverse
 
 # Create your views here.
 def index(request):
-    # show student on index page
-    students = students.objects.all()
-    return render(request, 'schedule/index.html', {'students': students})
+    students_list = students.objects.all()  # Use the correct model name here
+    return render(request, 'schedule/index.html', {'students': students_list})
 
 
 

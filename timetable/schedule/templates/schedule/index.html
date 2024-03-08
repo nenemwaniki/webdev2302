@@ -4,7 +4,7 @@
     <div class="container">
         <h1>Welcome to the Student Schedule Interface</h1>
         <p>Here you can view and edit the schedule of students.</p>
-        <a href="{% url 'new' %}">Add a new student</a>
+        <a >Add a new student</a>
         <br><br>
         <div class="table-container">
             <table class="table table-bordered">
@@ -25,9 +25,9 @@
                             <td>{{ student.email }}</td>
                             <td>{{ student.registration_number }}</td>
                             <td>
-                                <a href="{% url 'edit' student.id %}">Edit</a> 
-                                <a href="{% url 'unit' %}">View Schedule</a>
-                                <a href="{% url 'delete' student.id %}" onclick="confirmDelete('{{ student.id }}')">Delete</a>
+                                <a >Edit</a> 
+                                <a >View Schedule</a>
+                                <a >Delete</a>
                             </td>
                         </tr>
                     {% endfor %}

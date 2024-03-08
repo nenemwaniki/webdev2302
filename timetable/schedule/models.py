@@ -25,13 +25,14 @@ class courses(models.Model):
 class students(models.Model):
     student_reg = models.CharField(max_length=10)
     student_name = models.CharField(max_length=100)
-    student_course = models.ForeignKey(courses, on_delete=models.CASCADE)
+    student_course = models.ForeignKey(courses, on_delete=models.CASCADE, null=True, blank=True)
     
     def __str__(self):
         return self.student_name
 
 class timetable(models.Model):
     unit = models.ForeignKey(units, on_delete=models.CASCADE)
+
     student = models.ForeignKey(students, on_delete=models.CASCADE)
     course= models.ForeignKey(courses, on_delete=models.CASCADE)
 
