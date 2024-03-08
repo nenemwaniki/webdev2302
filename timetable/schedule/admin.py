@@ -6,6 +6,6 @@ admin.site.register(units)
 admin.site.register(courses)
 admin.site.register(students)
 admin.site.register(timetable)
-admin.site.register(admin)
+admin.site.register(administrator)
 admin.site.register(special_events)
 

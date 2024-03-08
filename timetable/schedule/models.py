@@ -32,9 +32,6 @@ class students(models.Model):
 
 class timetable(models.Model):
     unit = models.ForeignKey(units, on_delete=models.CASCADE)
-    day = models.CharField(max_length=10)
-    time = models.TimeField()
-    venue = models.CharField(max_length=100)
     student = models.ForeignKey(students, on_delete=models.CASCADE)
     course= models.ForeignKey(courses, on_delete=models.CASCADE)
 
@@ -42,7 +39,7 @@ class timetable(models.Model):
     def __str__(self):
         return self.unit.unit_name
     
-class admin(models.Model):
+class administrator(models.Model):
     admin_name = models.CharField(max_length=100)
     admin_password = models.CharField(max_length=100)
     
