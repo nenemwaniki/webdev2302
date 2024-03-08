@@ -25,7 +25,8 @@
                             <td>{{ student.email }}</td>
                             <td>{{ student.registration_number }}</td>
                             <td>
-                                <a href="{% url 'edit' student.id %}">Edit</a> |
+                                <a href="{% url 'edit' student.id %}">Edit</a> 
+                                <a href="{% url 'unit' %}">View Schedule</a>
                                 <a href="{% url 'delete' student.id %}" onclick="confirmDelete('{{ student.id }}')">Delete</a>
                             </td>
                         </tr>

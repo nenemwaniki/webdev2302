@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404,redirect
 import pandas as pd
 from .models import *
-from .forms import StudentForm
+from .forms import *
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
@@ -67,7 +67,25 @@ def get_student_timetable(student_id):
 
     return timetable_df
 
+# Create a view to show units assigned to a student, they dont register for themselves
+def unit(request):
+    # Get all the units from the affiliated program that the stdent is a part of
+    units = Unit.objects.all()
+    return render(request, 'schedule/unit.html', {'units': units})
+    
+           
 
+    
+#view to create units
+def new_unit(request):
+    if request.method == 'POST':
+        form = UnitForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse("unit"))
+    else:
+        form = UnitForm()
+    return render(request, 'schedule/reg_unit.html', {'form': form})
 
 def index(request):
     # show student on index page
