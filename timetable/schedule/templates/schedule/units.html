@@ -1,0 +1,41 @@
+{% extends "schedule/layout.html"%}
+
+{% block content %}
+    <div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Unit Code</th>
+                <th>Unit Name</th>
+                <th>Unit Lecturer</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for unit in units %}
+                <tr>
+                    <td>{{ unit.code }}</td>
+                    <td>{{ unit.name }}</td>
+                    <td>{{ unit.lecturer }}</td>
+                    <td>
+                        <a href="{% url 'editunit' unit.id %}" class="btn btn-primary">Edit</a>
+                        <a href="{% url 'deleteunit' unit.id %}"class="btn btn-danger delete-unit">Delete</a></td>
+                        <script>
+                            document.querySelectorAll('.delete-unit').forEach(deleteButton => {
+                              deleteButton.addEventListener('click', (event) => {
+                                event.preventDefault(); // Prevent default form submission
+                            
+                                const confirmation = confirm("Are you sure you want to delete this unit?");
+                                if (confirmation) {
+                                  window.location.href = event.target.href; // Redirect on confirmation
+                                }
+                              });
+                            });
+                            </script>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<a href="{% url 'newunit' %}" class="btn btn-primary">Add a new unit</a>
+{% endblock %}

@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Add New Student</h1>
     <form method="POST">
-        {{ form.as_p}}
+        {{ form.as_table}}
         {% csrf_token %}
         <button type="submit"method="GET" class="btn btn-primary">Add Student</button>
         

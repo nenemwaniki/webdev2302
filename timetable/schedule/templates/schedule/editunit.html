@@ -1,11 +1,11 @@
 {% extends 'schedule/layout.html' %}
 
 {% block content %}
-    <h1>Edit Student</h1>
+    <h1>Edit Unit</h1>
     <form method="POST">
-        {{ form.as_table}}
+        {{ form.as_p}}
         {% csrf_token %}
-        <button type="submit"method="GET" class="btn btn-primary">Add Student</button>
+        <button type="submit"method="GET" class="btn btn-primary">Edit unit</button>
         
     </form>
 {% endblock %}

@@ -1,0 +1,28 @@
+{% extends "schedule/layout.html"%}
+
+{% block content %}
+    <div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Lecturer</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses_list %}
+                <tr>
+                    <td>{{ course.code }}</td>
+                    <td>{{ course.name }}</td>
+                    <td>{{ course.lecturer }}</td>
+                    <td>
+                        <a href="{% url 'editcourse' course.id %}" class="btn btn-primary">Edit</a>
+                        
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -3,11 +3,11 @@ from django.db import models
 class Units(models.Model):  # Use PascalCase for model names
     code = models.CharField(max_length=10, unique=True)  # Ensure unique unit codes
     name = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField( blank=True)
     lecturer = models.CharField(max_length=100)
     semester = models.FloatField()
-    venue = models.CharField(max_length=100)
-    time = models.TimeField()
+    venue = models.CharField(max_length=100, blank=True)
+    time = models.TimeField( blank=True)
 
     def __str__(self):
         return self.name
@@ -49,7 +49,7 @@ class Administrator(models.Model):
 
 class SpecialEvents(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     date = models.DateField()
     time = models.TimeField()
     venue = models.CharField(max_length=100)
