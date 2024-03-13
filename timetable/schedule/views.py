@@ -14,11 +14,12 @@ def sign_in(request):
   return redirect('login')
 
 def index(request):
-    if request.user.is_superuser:
-        students_list = Students.objects.all()  
-        return render(request, 'schedule/index.html', {'students': students_list})
-    else:
-        return redirect('timetable')
+  if request.user.is_superuser:
+    students_list = Students.objects.all()  
+    return render(request, 'schedule/index.html', {'students': students_list})
+  else:
+    return redirect('timetable')
+
     
 def timetable(request):
   # Handle student view logic here
