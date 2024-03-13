@@ -1,14 +1,28 @@
 from django.shortcuts import render, get_object_or_404,redirect
-import pandas as pd
 from .models import *
 from .forms import *
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 # Create your views here.
+
+def sign_in(request):
+  # Process sign-in logic here (optional)
+  # Potentially handle form submission for email/password login (if applicable)
+  
+  # Redirect to Django-Allauth's login view for Google Sign-In
+  return redirect('login')
+
 def index(request):
-    students_list = Students.objects.all()  
-    return render(request, 'schedule/index.html', {'students': students_list})
+    if request.user.is_superuser:
+        students_list = Students.objects.all()  
+        return render(request, 'schedule/index.html', {'students': students_list})
+    else:
+        return redirect('timetable')
+    
+def timetable(request):
+  # Handle student view logic here
+  return render(request, 'timetable.html')
 #Show all units
 def units(request):
     units_list = Units.objects.all()

@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     "schedule",
+    'allauth',
+    'allauth.account',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -99,6 +101,21 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    # Existing authentication backends (if any)
+    "django.contrib.auth.backends.ModelBackend",
+    # Add Google OAuth backend
+    "allauth.account.auth_backends.OAuth2Backend",
+)
+
+# Replace with your downloaded credentials
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'CLIENT_ID': '833484851222-uclrst2hksf2h3ggeqj9lsdvo4us69fv.apps.googleusercontent.com',
+        'CLIENT_SECRET': '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',
+    }
+}
 
 
 # Internationalization
