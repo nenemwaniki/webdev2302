@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -34,6 +36,9 @@ INSTALLED_APPS = [
     "schedule",
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'social_django',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -50,7 +55,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "allauth.account.middleware.AccountMiddleware"
+    "allauth.account.middleware.AccountMiddleware",
+    "social_django.middleware.SocialAuthExceptionMiddleware",
+
 ]
 
 ROOT_URLCONF = "timetable.urls"
@@ -66,6 +73,9 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
+
             ],
         },
     },
@@ -108,6 +118,8 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     # Add Google OAuth backend
     "allauth.account.auth_backends.OAuth2Backend",
+    "social_core.backends.google.GoogleOAuth2",
+
 )
 
 # Replace with your downloaded credentials
@@ -115,10 +127,20 @@ SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'CLIENT_ID': '833484851222-uclrst2hksf2h3ggeqj9lsdvo4us69fv.apps.googleusercontent.com',
         'CLIENT_SECRET': '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',
+        'SCOPE': [
+            'https://www.googleapis.com/auth/userinfo.email',
+            'https://www.googleapis.com/auth/userinfo.profile',
+        ]
     }
 }
+SITE_ID = 1  # Update with your site ID (likely 1 for development)
+LOGIN_URL="login"
+LOGIN_REDIRECT_URL="home"  # URL to redirect to after successful login
+LOGOUT_URL="logout"
+LOGOUT_REDIRECT_URL="login"  # URL to redirect to after logout
 
-
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = "833484851222-uclrst2hksf2h3ggeqj9lsdvo4us69fv.apps.googleusercontent.com"
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "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"
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 

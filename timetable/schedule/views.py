@@ -1,25 +1,28 @@
-from django.shortcuts import render, get_object_or_404,redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
 from .forms import *
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-# Create your views here.
-
-def sign_in(request):
-  # Process sign-in logic here (optional)
-  # Potentially handle form submission for email/password login (if applicable)
-  
-  # Redirect to Django-Allauth's login view for Google Sign-In
-  return redirect('login')
-
+# Sign-in view (redirects to Django-Allauth's login view)
+def login(request):
+    return render(request, 'schedule/sign_in.html')
+# Admin-only view for student list
+@login_required
 def index(request):
-  if request.user.is_superuser:
-    students_list = Students.objects.all()  
-    return render(request, 'schedule/index.html', {'students': students_list})
-  else:
-    return redirect('timetable')
+    if request.user.is_superuser:
+        students_list = Students.objects.all()
+        return render(request, 'schedule/index.html', {'students': students_list})
+    else:
+        return redirect('home')  # Redirect non-admins to student homepage
 
+# Student-specific homepage
+@login_required
+def home(request):
+    return render(request, 'schedule/home.html')
     
 def timetable(request):
   # Handle student view logic here
@@ -41,18 +44,21 @@ def newstudent(request):
         form = StudentForm()
     return render(request, 'schedule/newstudent.html', {'form': form})
 
+@login_required
 def editstudent(request, pk):
     student = get_object_or_404(Students, pk=pk)
-    if request.method == "POST":
-        form = StudentForm(request.POST, instance=student)
-        if form.is_valid():
-            student = form.save(commit=False)
-            student.save()
-            return HttpResponseRedirect(reverse('index'))
+    if request.user == student:  # Ensure student is editing their own profile
+        if request.method == "POST":
+            form = StudentForm(request.POST, instance=student)
+            if form.is_valid():
+                form.save()
+                return redirect('home')  # Redirect to student homepage after edit
+        else:
+            form = StudentForm(instance=student)
+        return render(request, 'schedule/editstudent.html', {'form': form})
     else:
-        form = StudentForm(instance=student)
-    return render(request, 'schedule/editstudent.html', {'form': form})
-
+        # Handle unauthorized access (e.g., redirect back to student homepage)
+        return redirect('home')
 def deletestudent(request, pk):
     student = get_object_or_404(Students, pk=pk)
     student.delete()
