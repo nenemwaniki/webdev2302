@@ -24,4 +24,6 @@ urlpatterns = [
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),  # Logout view
     path("social-auth/", include("allauth.urls")),  # URL to redirect to after successful login
     path("accounts/", include("allauth.urls")),  # URL to redirect to after successful login
+
+    path("login/login_view/", views.login_view, name = 'login_view' ) #URL to login user
 ]

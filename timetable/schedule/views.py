@@ -1,16 +1,21 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
 from .forms import *
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib.auth.forms import UserCreationForm
+# from .forms import CustomUserCreationForm
 
 # Sign-in view (redirects to Django-Allauth's login view)
 def login(request):
     return render(request, 'schedule/sign_in.html')
 # Admin-only view for student list
+
+
 @login_required
 def index(request):
     if request.user.is_superuser:
@@ -59,6 +64,7 @@ def editstudent(request, pk):
     else:
         # Handle unauthorized access (e.g., redirect back to student homepage)
         return redirect('home')
+    
 def deletestudent(request, pk):
     student = get_object_or_404(Students, pk=pk)
     student.delete()
@@ -108,3 +114,33 @@ def editcourse(request, pk):
             return HttpResponseRedirect(reverse('courses'))
     else:
         form = CourseForm(instance=course)
+
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Authenticate user
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            # Login the user
+            login(request, user)
+            return redirect('home')  # Replace 'home' with the URL name of your home page
+        else:
+            # Invalid login
+            return render(request, 'schedule/login_view.html', {'error': 'Invalid username or password'})
+
+    return render(request, 'schedule/login_view.html')
+
+# def signup_view(request):
+#     if request.method == 'POST':
+#         form = CustomUserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('login')  # Replace 'login' with the URL name of your login page
+#     else:
+#         form = CustomUserCreationForm()
+
+#     return render(request, 'schedule/signup_view.html', {'form': form})

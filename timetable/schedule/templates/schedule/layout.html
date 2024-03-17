@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student List</title>
+  {% block title %}
+  {% endblock %}
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -33,10 +34,9 @@
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       
-      let button = document.getElementById('button1');
+      const button = document.getElementById('logbutton');
       button.addEventListener('click', function() {
-        
-        window.open('login.html', '_self');
+        window.location.href = "{% url 'login_view' %}";
     });
   });
   </script>
